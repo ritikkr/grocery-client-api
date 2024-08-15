@@ -1,0 +1,33 @@
+package com.groceryapp.client_api.model;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.util.Date;
+
+@Entity
+public class OrderDelivery {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long orderDeliveryId;
+
+    @Column(nullable = false)
+    private Date deliveryDate;
+
+    @Enumerated(EnumType.STRING)
+    private DeliveryStatus status; // Out for delivery, Delivered, Failed
+
+    @ManyToOne
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
+
+    @ManyToOne
+    @JoinColumn(name = "delivery_partner_id", nullable = false)
+    private DeliveryPartner deliveryPartner;
+
+    // ... other fields as needed
+
+    // getters and setters
+}
