@@ -1,5 +1,6 @@
 package com.groceryapp.client_api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,11 +22,10 @@ public class OrderItem {
     @Column(nullable = false)
     private int quantity;
 
-    @Column(precision = 10, scale = 2)
-    private BigDecimal price;
 
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
+    @JsonIgnore
     private Order order;
 
     @ManyToOne

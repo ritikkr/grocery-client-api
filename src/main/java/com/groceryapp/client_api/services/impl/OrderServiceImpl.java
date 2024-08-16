@@ -1,11 +1,13 @@
 package com.groceryapp.client_api.services.impl;
 
 
+import com.groceryapp.client_api.dto.OrderItemRequest;
+import com.groceryapp.client_api.dto.OrderRequest;
 import com.groceryapp.client_api.exception.OrderNotFoundException;
+import com.groceryapp.client_api.exception.ProductNotFoundException;
 import com.groceryapp.client_api.exception.UserNotFoundException;
-import com.groceryapp.client_api.model.Order;
-import com.groceryapp.client_api.model.OrderStatus;
-import com.groceryapp.client_api.model.User;
+import com.groceryapp.client_api.model.*;
+import com.groceryapp.client_api.repository.OrderItemRepository;
 import com.groceryapp.client_api.repository.OrderRepository;
 import com.groceryapp.client_api.repository.ProductRepository;
 import com.groceryapp.client_api.repository.UserRepository;
@@ -14,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -27,21 +31,49 @@ public class OrderServiceImpl implements OrderService {
     private ProductRepository productRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+
     // ... other repositories as needed
 
     @Override
-    public Order createOrder(Order order) throws UserNotFoundException {
-        User user = userRepository.findById(order.getUser().getUserId()).orElseThrow(() -> new UserNotFoundException("User not found"));
-        order.setUser(user);
+    public Order createOrder(OrderRequest orderRequest) throws UserNotFoundException, ProductNotFoundException {
+        User user = userRepository.findById(orderRequest.getUserId()).orElseThrow(() -> new UserNotFoundException("User not found"));
 
         // Calculate total amount
-        calculateTotalAmount(order);
+        BigDecimal totalAmount = calculateTotalAmount(orderRequest);
 
         // Check product availability
-        checkProductAvailability(order);
+        checkProductAvailability(orderRequest);
+
+        Order order = new Order();
+        order.setOrderDate(new Date());
+        order.setUser(user);
+        order.setOrderStatus(OrderStatus.CONFIRMED);
+        order.setTotalAmount(totalAmount);
+        Order savedOrder = orderRepository.save(order);
+
+        List<OrderItem> orderItemList = new ArrayList<>();
+        for(OrderItemRequest orderItemRequest: orderRequest.getOrderItems()){
+            OrderItem orderItem = new OrderItem();
+            Product product =  productRepository.findById(orderItemRequest.getProductId()).orElseThrow(() -> new ProductNotFoundException("No Product Found with id:"+orderItemRequest.getProductId()));
+
+            orderItem.setProduct(product);
+            orderItem.setQuantity(orderItemRequest.getQuantity());
+            orderItem.setOrder(savedOrder);
+
+            OrderItem savedOrderItem = orderItemRepository.save(orderItem);
+            orderItemList.add(savedOrderItem);
+
+        }
+
+        order.setOrderItems(orderItemList);
+
+
+
 
         // Create order and order items
-        Order savedOrder = orderRepository.save(order);
+
 
         // Update product stock
 //        updateProductStock(order);
@@ -56,17 +88,23 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-    private void calculateTotalAmount(Order order) {
+    private BigDecimal calculateTotalAmount(OrderRequest orderRequest) throws ProductNotFoundException {
+        BigDecimal totalAmount=BigDecimal.ZERO;
+        for(OrderItemRequest orderItemRequest: orderRequest.getOrderItems()){
+            Product product =  productRepository.findById(orderItemRequest.getProductId()).orElseThrow(() -> new ProductNotFoundException("No Product Found with id:"+orderItemRequest.getProductId()));
+            totalAmount = BigDecimal.valueOf( orderItemRequest.getQuantity()).multiply(product.getPrice()).add(totalAmount);
+        }
+        return totalAmount;
         // Logic to calculate total amount based on order items
     }
 
-    private void checkProductAvailability(Order order) {
+    private void checkProductAvailability(OrderRequest orderRequest) {
         // Logic to check product availability based on order items
     }
 
     @Override
-    public Order getOrderById(Long orderId) {
-        return orderRepository.findById(orderId).orElse(null);
+    public Order getOrderById(Long orderId) throws OrderNotFoundException {
+        return orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("No Order found with id: "+orderId));
     }
 
     @Override

@@ -1,12 +1,12 @@
 package com.groceryapp.client_api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@Table(name = "order_table")
 public class Order {
 
     @Id
@@ -31,6 +32,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)

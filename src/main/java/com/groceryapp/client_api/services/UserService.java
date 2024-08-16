@@ -1,4 +1,13 @@
 package com.groceryapp.client_api.services;
 
-public class UserService {
+import com.groceryapp.client_api.exception.UserNotFoundException;
+import com.groceryapp.client_api.model.User;
+
+
+public interface UserService {
+
+    public User createUser(User user);
+    public User getUserById(Long id) throws UserNotFoundException;
+    public User deleteUserById(Long id) throws UserNotFoundException;
+
 }

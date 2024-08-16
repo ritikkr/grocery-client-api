@@ -1,5 +1,6 @@
 package com.groceryapp.client_api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,14 +29,15 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @JsonIgnore
     private Category category;
 
 
-
     @Column(nullable = false)
-    private int stockQuantity;
+    private Long stockQuantity;
 
     @OneToMany(mappedBy = "product")
+    @JsonIgnore
     private List<OrderItem> orderItems;
 
 
