@@ -1,5 +1,6 @@
 package com.groceryapp.client_api.services.impl;
 
+import com.groceryapp.client_api.dto.AccountUpdateRequest;
 import com.groceryapp.client_api.exception.UserNotFoundException;
 import com.groceryapp.client_api.model.User;
 import com.groceryapp.client_api.repository.UserRepository;
@@ -30,6 +31,19 @@ public class UserServiceImpl implements UserService {
     public User deleteUserById(Long id) throws UserNotFoundException {
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("No User found with id:"+id));
         userRepository.deleteById(id);
+        return user;
+    }
+
+    @Override
+    public User updateAccout(AccountUpdateRequest accountUpdateRequest) throws UserNotFoundException {
+        User user = userRepository.findById(accountUpdateRequest.getUserId()).orElseThrow(() -> new UserNotFoundException("No User found with id: "+accountUpdateRequest.getUserId()));
+
+        user.setAddress(accountUpdateRequest.getAddress());
+        user.setFirstName(accountUpdateRequest.getFirstName());
+        user.setLastName(accountUpdateRequest.getLastName());
+        user.setPhoneNumber(accountUpdateRequest.getPhoneNumber());
+        user.setPassword(accountUpdateRequest.getPassword());
+
         return user;
     }
 }

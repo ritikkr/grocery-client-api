@@ -51,6 +51,7 @@ public class OrderServiceImpl implements OrderService {
         order.setUser(user);
         order.setOrderStatus(OrderStatus.CONFIRMED);
         order.setTotalAmount(totalAmount);
+        order.setShippingAddress(orderRequest.getShippingAddress());
         Order savedOrder = orderRepository.save(order);
 
         List<OrderItem> orderItemList = new ArrayList<>();
@@ -108,9 +109,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getOrdersByUser(Long userId) {
-//        return orderRepository.findByUserId(userId);
-        return new ArrayList<>();
+    public List<Order> getOrdersByUser(Long userId) throws UserNotFoundException {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("No User found with id: "+userId))
+                .getOrders();
+
+
     }
 
 

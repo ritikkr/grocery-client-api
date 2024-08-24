@@ -2,9 +2,7 @@ package com.groceryapp.client_api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -13,6 +11,9 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,11 +22,23 @@ public class Product {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private String brand;
+
+    @Column(nullable = false)
+    private Double rating;
+
     @Column(length = 1000)
     private String description;
 
+    @Column(length = 1000)
+    private String imageUrl;
+
     @Column(precision = 10, scale = 2, nullable = false)
     private BigDecimal price;
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal discountPercent;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

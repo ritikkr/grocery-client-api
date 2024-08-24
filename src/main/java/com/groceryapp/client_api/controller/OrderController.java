@@ -17,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/api")
 public class OrderController {
@@ -32,6 +34,11 @@ public class OrderController {
     @PostMapping("/order")
     public  ResponseEntity<Order> createCategory(@RequestBody OrderRequest orderRequest) throws UserNotFoundException, ProductNotFoundException {
         return new ResponseEntity<>(orderService.createOrder(orderRequest), HttpStatus.OK );
+    }
+
+    @GetMapping("/order/user/{id}")
+    public  ResponseEntity<List<Order>> getOrderByUser(@PathVariable("id") Long userId) throws UserNotFoundException, ProductNotFoundException {
+        return new ResponseEntity<>(orderService.getOrdersByUser(userId), HttpStatus.OK );
     }
 
 

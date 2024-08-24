@@ -24,6 +24,9 @@ public class Order {
     @Column(nullable = false)
     private Date orderDate;
 
+    @Column(nullable = false)
+    private Address shippingAddress;
+
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus; // Pending, Confirmed, Delivered, Cancelled
 

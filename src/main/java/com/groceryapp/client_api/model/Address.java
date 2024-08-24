@@ -1,26 +1,29 @@
 package com.groceryapp.client_api.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 
 @Getter
 @Setter
 @ToString
 @Embeddable
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Address {
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private String addressLine1;
 
-    @Column(nullable = false)
+    private String addressLine2;
+
+//    @Column(nullable = false)
     private String city;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private String state;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private String zipcode;
 
     // getters and setters

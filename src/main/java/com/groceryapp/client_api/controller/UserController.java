@@ -1,5 +1,6 @@
 package com.groceryapp.client_api.controller;
 
+import com.groceryapp.client_api.dto.AccountUpdateRequest;
 import com.groceryapp.client_api.exception.UserNotFoundException;
 import com.groceryapp.client_api.model.User;
 import com.groceryapp.client_api.services.UserService;
@@ -29,6 +30,11 @@ public class UserController {
     @DeleteMapping("/user/{id}")
     public ResponseEntity<User> deleteUserById(@PathVariable("id") Long id) throws UserNotFoundException {
         return new ResponseEntity<>( userService.deleteUserById(id), HttpStatus.OK);
+    }
+
+    @PutMapping("/user")
+    public ResponseEntity<User> updateUser(@RequestBody AccountUpdateRequest accountUpdateRequest) throws UserNotFoundException {
+        return new ResponseEntity<>( userService.updateAccout(accountUpdateRequest), HttpStatus.OK);
     }
 
 

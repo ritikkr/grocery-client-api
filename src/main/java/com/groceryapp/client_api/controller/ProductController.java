@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/api")
 public class ProductController {
@@ -34,6 +36,21 @@ public class ProductController {
     @DeleteMapping("/product/{id}")
     public  ResponseEntity<Product> deleteProductById(@PathVariable("id") Long id) throws ProductNotFoundException {
         return new ResponseEntity<>(productService.deleteProductById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/product")
+    public  ResponseEntity<List<Product>> getAllProduct(){
+        return new ResponseEntity<>(productService.getAllProduct(), HttpStatus.OK);
+    }
+
+    @GetMapping("/productByName/{name}")
+    public  ResponseEntity<List<Product>> getAllProductByNameLike(@PathVariable("name")String name){
+        return new ResponseEntity<>(productService.getAllProductByNameLike(name), HttpStatus.OK);
+    }
+
+    @GetMapping("/product/random")
+    public  ResponseEntity<List<Product>> getProductsRandomly(){
+        return new ResponseEntity<>(productService.getProductsRandomly(), HttpStatus.OK);
     }
 
 

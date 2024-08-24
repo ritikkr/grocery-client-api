@@ -4,6 +4,7 @@ import com.groceryapp.client_api.exception.CategoryAlreadyExistException;
 import com.groceryapp.client_api.exception.CategoryNotFoundException;
 import com.groceryapp.client_api.exception.UserNotFoundException;
 import com.groceryapp.client_api.model.Category;
+import com.groceryapp.client_api.model.Product;
 import com.groceryapp.client_api.model.User;
 import com.groceryapp.client_api.services.CategoryService;
 import com.groceryapp.client_api.services.UserService;
@@ -12,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/api")
@@ -25,6 +28,11 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.getCategoryById(id), HttpStatus.OK);
     }
 
+    @GetMapping("/category")
+    public  ResponseEntity<List<Category>> getAllCategory()  {
+        return new ResponseEntity<>(categoryService.getAllCategory(), HttpStatus.OK );
+    }
+
     @PostMapping("/category")
     public  ResponseEntity<Category> createCategory(@RequestBody Category category) throws CategoryAlreadyExistException {
         return new ResponseEntity<>(categoryService.createCategory(category), HttpStatus.OK );
@@ -33,6 +41,11 @@ public class CategoryController {
     @DeleteMapping("/category/{id}")
     public ResponseEntity<Category> deleteCategoryById(@PathVariable("id") Long id) throws CategoryNotFoundException {
         return new ResponseEntity<>(categoryService.deleteCategoryById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/category/products/{id}")
+    public ResponseEntity<List<Product>> getAllProductsByCategoryId(@PathVariable("id") Long id) throws CategoryNotFoundException {
+        return new ResponseEntity<>(categoryService.getAllProductsByCategoryId(id), HttpStatus.OK);
     }
 
 

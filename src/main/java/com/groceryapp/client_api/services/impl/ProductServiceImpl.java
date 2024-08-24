@@ -11,6 +11,8 @@ import com.groceryapp.client_api.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -26,6 +28,18 @@ public class ProductServiceImpl implements ProductService {
     public Product getProductById(Long id) throws ProductNotFoundException {
         return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("No Product found with id: "+id));
     }
+
+    @Override
+    public List<Product> getAllProduct()  {
+            return productRepository.findAll();
+    }
+
+    @Override
+    public List<Product> getAllProductByNameLike(String name)  {
+        return productRepository.findByNameLike(name);
+    }
+
+
 
     @Override
     public Product addProduct(ProductRequest productRequest) throws CategoryNotFoundException {
@@ -53,5 +67,12 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("No Product Found with id:"+id));
         productRepository.deleteById(id);
         return product;
+    }
+
+    @Override
+    public List<Product> getProductsRandomly() {
+        List<Product> randomProducts = productRepository.findAll();
+        Collections.shuffle(randomProducts);
+        return randomProducts;
     }
 }
