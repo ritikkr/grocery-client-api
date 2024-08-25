@@ -201,7 +201,7 @@ public class DatabaseInitializer {
                 .name("Juice")
                 .brand("Tropicana")
                 .rating(4.2)
-                .price(new BigDecimal(3.25))
+                .price(new BigDecimal(24))
                 .discountPercent(new BigDecimal(8))
                 .description("Orange juice")
                 .imageUrl("https://m.media-amazon.com/images/I/714kIox4UzL.jpg") // Replace with actual image URL
@@ -213,7 +213,7 @@ public class DatabaseInitializer {
                 .name("Soda")
                 .brand("Coca-Cola")
                 .rating(4.0)
-                .price(new BigDecimal(1.50))
+                .price(new BigDecimal(1))
                 .discountPercent(new BigDecimal(3))
                 .description("Classic cola")
                 .imageUrl("https://5.imimg.com/data5/SELLER/Default/2023/9/341372302/SC/BB/OF/142165623/1-25-l-coca-cola-juice-500x500.jpg") // Replace with actual image URL
@@ -227,7 +227,7 @@ public class DatabaseInitializer {
                 .name("Shampoo")
                 .brand("Head & Shoulders")
                 .rating(4.7)
-                .price(new BigDecimal(5.99))
+                .price(new BigDecimal(5))
                 .discountPercent(new BigDecimal(12))
                 .description("Anti-dandruff shampoo")
                 .imageUrl("https://www.bigbasket.com/media/uploads/p/l/267845_11-head-shoulders-anti-dandruff-shampoo-cool-menthol-energizes-scalp.jpg") // Replace with actual image URL
@@ -239,10 +239,10 @@ public class DatabaseInitializer {
                 .name("Toothpaste")
                 .brand("Colgate")
                 .rating(4.6)
-                .price(new BigDecimal(3.75))
+                .price(new BigDecimal(3))
                 .discountPercent(new BigDecimal(7))
                 .description("Cavity protection toothpaste")
-                .imageUrl("https://www.bigbasket.com/media/uploads/p/l/267845_11-head-shoulders-anti-dandruff-shampoo-cool-menthol-energizes-scalp.jpg") // Replace with actual image URL
+                .imageUrl("https://images.apollo247.in/pub/media/catalog/product/D/A/DAB0441_1-JULY23_1.jpg") // Replace with actual image URL
                 .stockQuantity(300L)
                 .category(categoryRepository.findByName(initialCategories.get(5)).get())
                 .build());
